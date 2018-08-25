@@ -28,7 +28,10 @@ export class AuthService {
   members:any[];
   activeStudentKey:string;
   activeAdminKey:string;
+  activeAdminName;
   counsellor:any[];
+  //studentData:any[];
+  public matchedStudentData:any[];
   counsellorList:AngularFireList<any>;
   //md5 = new Md5();
   constructor(private db:AngularFireDatabase,private router:Router ,public afs: AngularFirestore,private http:Http ) {
@@ -39,6 +42,26 @@ export class AuthService {
   });
   
    }
+
+
+/****************** All student-data component logic is here **************************************************/    
+
+
+          /*********************Getting Student data for associated counsellor *******************/
+
+
+          getStudentData(){
+            this.matchedStudentData = [];
+            for(let i=0;i<this.members.length;i++){
+              if(this.members[i].counsellor.name == this.activeAdminName ){
+                  //alert("matched");
+                  this.matchedStudentData.push(this.members[i])    
+            } 
+          }
+        }  
+
+          /*********************Getting Student data for associated counsellor ends *******************/
+/****************** All student-data component logic ends here **************************************************/          
 
    getCounsellor(){
      this.counsellor = [];

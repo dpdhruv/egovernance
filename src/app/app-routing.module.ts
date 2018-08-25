@@ -8,6 +8,7 @@ import { AuthGuard } from './guards/auth.guard';
 import { AdminGuard } from "./guards/admin.guard";
 import { StudentLeaveAppComponent } from './student-leave-app/student-leave-app.component';
 import { StudentProfileComponent } from './student-profile/student-profile.component';
+import { StudentDataComponent } from './admin/student-data/student-data.component';
 
 const routes: Routes = [
     { path: 'students/:uname' ,
@@ -18,7 +19,13 @@ const routes: Routes = [
         {path:'profile',component:StudentProfileComponent}
       ]  
     },
-    { path:'admin/:uname',canActivate:[AdminGuard], component: AdminComponent},
+    { path:'admin/:uname',
+      canActivate:[AdminGuard],
+      component: AdminComponent,
+      children:[
+        {path:'student-data',component:StudentDataComponent}
+      ]
+    },
     { path:'',component:SignUpComponent},
     { path:'login', component:LogInComponent}
 ];

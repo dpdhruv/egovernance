@@ -39,7 +39,15 @@ export class AdminComponent implements OnInit {
         }
       }
       this.authservice.activeAdminKey = this.activeAdminKey;
+      this.authservice.activeAdminName = this.userName;
     });
     this.toastr.success('You have logged in',this.userName);
+  }
+
+  navigateTo(){
+    this.router.navigate(['student-data'],{relativeTo:this.route})
+  }
+  home(){
+    this.router.navigate(['admin',this.userName]);
   }
 }

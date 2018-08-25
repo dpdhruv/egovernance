@@ -20,6 +20,7 @@ import { LogInComponent } from './log-in/log-in.component';
 import { AuthGuard } from "./guards/auth.guard";
 import { StudentLeaveAppComponent } from './student-leave-app/student-leave-app.component';
 import { StudentProfileComponent } from './student-profile/student-profile.component';
+import { StudentDataComponent } from './admin/student-data/student-data.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { StudentProfileComponent } from './student-profile/student-profile.compo
     LogInComponent,
     StudentLeaveAppComponent,
     StudentProfileComponent,
+    StudentDataComponent,
   ],
   imports: [
     BrowserModule,
