@@ -1,0 +1,25 @@
+
+<div class="col-md-10 m-5 p-5 mx-auto jumbotron">
+  <div class="row">
+    <div class="col-md-5 left">
+      <ul  style="list-style-type:none;display: flex;">
+        <li>Students</li>
+        <li>Leave Application</li>
+      </ul>
+    </div>
+    <div class="col-md-5 float-right">
+      <div class="row">
+        <div class="col-md-3 mx-auto user float-right">
+            <span class="fa fa-user fa-5x"></span>
+        </div>
+        <div>
+          <span class="font-weight-bold text-capitalize text-justify">Name:&nbsp;{{activeAdmin.name}}</span><br>
+          <span class="font-weight-bold text-justify">Role:&nbsp;{{activeAdmin.role}}</span>
+        </div>
+      </div>  
+    </div>
+  </div>  
+</div>
+<div class="col-md-10 mx-auto">
+    <router-outlet></router-outlet>
+ </div> 

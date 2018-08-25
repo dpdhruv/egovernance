@@ -1,0 +1,7 @@
+input{
+    border-radius:50px;
+}
+
+.login:hover{
+    color: blue
+}
