@@ -14,6 +14,7 @@ import { NavigationEnd } from '@angular/router';
 import { Observable } from "rxjs";
 import { getLocaleDateFormat } from '@angular/common';
 import { variable } from '@angular/compiler/src/output/output_ast'
+import { LeaveApp } from './leave-application';
 
 
 @Injectable({
@@ -24,6 +25,8 @@ export class AuthService {
 
   baseURL= "https://egovernance-81e95.firebaseio.com/Members/";
 
+  list:any[];
+  applicationList:AngularFireList<any>;
   memberList: AngularFireList<any>;
   members:any[];
   activeStudentKey:string;
@@ -40,9 +43,17 @@ export class AuthService {
      this.members=members;
      console.log(this.members);
   });
-  
-   }
+  this.applicationList = db.list('/leave-application');
+  }
 
+   submitApplication(data : LeaveApp , id:string , status:string){
+      this.applicationList.push({
+        id: id,
+        subject:data.title,
+        content:data.content,
+        status:status
+      });
+   }
 
 /****************** All student-data component logic is here **************************************************/    
 

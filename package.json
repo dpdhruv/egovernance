@@ -29,6 +29,8 @@
     "core-js": "^2.5.4",
     "firebase": "^5.3.1",
     "ng2-toastr": "^4.1.2",
+    "ng4-loading-spinner": "^1.2.3",
+    "ngx-loading": "^1.0.14",
     "ngx-toastr": "^9.0.2",
     "rxjs": "^6.0.0",
     "ts-md5": "^1.2.4",

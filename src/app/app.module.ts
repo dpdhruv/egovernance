@@ -11,6 +11,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { HttpModule } from '@angular/http';
 //import { ToastModule } from 'ng2-toastr/ng2-toastr';
 import { ToastrModule } from "ngx-toastr";
+import { LoadingModule } from 'ngx-loading';
 
 import { AppComponent } from './app.component';
 import { environment } from '../environments/environment';
@@ -44,6 +45,7 @@ import { StudentDataComponent } from './admin/student-data/student-data.componen
     AngularFirestoreModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
+    LoadingModule,
    // AngularFirestore
   ],
   providers: [AuthService,AuthGuard],

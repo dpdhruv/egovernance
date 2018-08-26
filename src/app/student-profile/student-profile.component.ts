@@ -13,20 +13,23 @@ import { ToastrService } from 'ngx-toastr';
 export class StudentProfileComponent implements OnInit {
 memberList: AngularFireList<any>;
 members:any;
+//public loading=true;
 counsellorName:any[];
 flag:boolean=true;
 activeStudent;
 activeStudentCounsellor;
   constructor(private authservice:AuthService,private db:AngularFireDatabase,private toastr : ToastrService) {
       this.authservice.getCounsellor();
-      this.counsellorName = this.authservice.counsellor;
-   }
+      this.counsellorName = this.authservice.counsellor;  
+    }
  
 
   
   ngOnInit() {
   console.log(this.authservice.activeStudentKey);
   this.authservice.getDataByKey().subscribe(res =>{
+    //this.spinner.hide();
+  //  this.loading = false;
      this.activeStudent = res.json();
      this.activeStudentCounsellor = res.json().counsellor;
    //  console.log(this.activeStudentCounsellor);

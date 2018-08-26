@@ -1,3 +1,50 @@
-<p>
-  student-leave-app works!
-</p>
+<div class="card">
+  <div class="card-header bg-dark text-white font-weight-bold text-center">
+    Fill Form For Leave Application
+  </div>
+  <form #leaveform="ngForm" class="card-body">
+    <div class="col-md-11 mx-auto">
+      <div class="row">
+        <span class="pt-2 text-dark font-weight-bold">Subject:</span>
+        <span class="form-group col-md-5">
+          <input class="form-control" type="text" name="title" #title="ngModel" ngModel>
+        </span>
+      </div>  
+    </div>
+    <div class="col-md-11 mx-auto">
+        <div class="row">
+          <span class="pt-2 text-dark font-weight-bold">Content:</span>
+          <span class="form-group col-md-5">
+           <textarea class="form-control" name="content" ngModel></textarea> 
+          </span>
+        </div>  
+    </div>
+    <div class="col-md-11 mx-auto">
+        <div class="row">
+            <button class="btn btn-primary col-md-6" (click)="submitApplication(leaveform)">Submit</button>  
+        </div>  
+    </div>
+  </form> 
+</div>   
+
+<hr style="border-top-color:blue;">
+<h3 *ngIf="isListEmpty else elseBlock" class="text-center font-weight-bold">There are no applications to show!!!</h3>
+
+<ng-template #elseBlock>
+    <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Content</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let list of newList">
+            <td>{{list.subject}}</td>
+            <td>{{list.content}}</td>
+            <td>{{list.status}}</td>
+          </tr>
+        </tbody>
+      </table>
+</ng-template>
