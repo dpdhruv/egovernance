@@ -4,5 +4,5 @@ export interface LeaveApp{
     title:string;
     content:string;
     status:string;
-
+    downloadUrl:string;
 }

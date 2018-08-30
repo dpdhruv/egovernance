@@ -12,6 +12,7 @@ import { HttpModule } from '@angular/http';
 //import { ToastModule } from 'ng2-toastr/ng2-toastr';
 import { ToastrModule } from "ngx-toastr";
 import { LoadingModule } from 'ngx-loading';
+import 'firebase/storage';
 
 import { AppComponent } from './app.component';
 import { environment } from '../environments/environment';

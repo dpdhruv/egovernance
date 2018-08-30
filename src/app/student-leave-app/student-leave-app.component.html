@@ -20,6 +20,20 @@
         </div>  
     </div>
     <div class="col-md-11 mx-auto">
+      <div class="row">
+        <span class="form-group col-md-5">
+         <i class="fa fa-paperclip fa-2x" style="cursor: pointer;" (click)="trigger()">
+          <input type="file" (change)="fileSelected($event)" id="file">
+        </i>  
+
+         &nbsp;
+         <span *ngIf="truthValue">{{file.name}}</span>
+         &nbsp;  
+        <span *ngIf="truthValue">{{progress}}%</span>
+        </span>
+      </div>  
+    </div>
+    <div class="col-md-11 mx-auto">
         <div class="row">
             <button class="btn btn-primary col-md-6" (click)="submitApplication(leaveform)">Submit</button>  
         </div>  
@@ -43,7 +57,9 @@
           <tr *ngFor="let list of newList">
             <td>{{list.subject}}</td>
             <td>{{list.content}}</td>
-            <td>{{list.status}}</td>
+            <td>
+              <span   style="font-size:100%;">{{list.status}}</span>
+            </td>
           </tr>
         </tbody>
       </table>

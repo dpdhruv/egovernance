@@ -46,12 +46,13 @@ export class AuthService {
   this.applicationList = db.list('/leave-application');
   }
 
-   submitApplication(data : LeaveApp , id:string , status:string){
+   submitApplication(data : LeaveApp , id:string , status:string ,url:string){
       this.applicationList.push({
         id: id,
         subject:data.title,
         content:data.content,
-        status:status
+        status:status,
+        Url: url
       });
    }
 
