@@ -50,4 +50,8 @@ export class AdminComponent implements OnInit {
   home(){
     this.router.navigate(['admin',this.userName]);
   }
+
+  leaveAppDashboard(){
+    this.router.navigate(['leave-app-dashboard'],{relativeTo:this.route});
+  }
 }

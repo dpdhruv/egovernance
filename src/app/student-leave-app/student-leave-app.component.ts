@@ -28,14 +28,14 @@ export class StudentLeaveAppComponent implements OnInit {
   fileLength=0;
   progress;
   truthValue:boolean=false;
-
+  studentDataByKey:any;
  
   constructor(private authservice:AuthService,private toastr: ToastrService ,private db:AngularFireDatabase) {
     this.applicationList = db.list('/leave-application');
 
     db.list(`/leave-application`).valueChanges().subscribe(list =>{  
       this.list=list;
-      console.log(this.list);
+     // console.log(this.list);
       this.newList = [];
       for(let i=0;i<this.list.length;i++){
         if(this.authservice.activeStudentKey == this.list[i].id){
@@ -54,19 +54,23 @@ export class StudentLeaveAppComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.authservice.activeStudentKey);
+   // console.log(this.authservice.activeStudentKey);
   }
 
  private submitApplication(data){
     this.id = this.authservice.activeStudentKey;
     this.status = "Pending";
+    this.authservice.getDataByKey().subscribe(res=>{
+     this.studentDataByKey = res.json(); 
+     //console.log(this.studentDataByKey)  
+    });
     //console.log(data.value);
      if(this.fileLength==0){
       this.Url="null";
-      console.log(this.fileLength);
-      console.log(this.Url);
+     // console.log(this.fileLength);
+     // console.log(this.Url);
      } 
-    this.authservice.submitApplication(data.value,this.id,this.status,this.Url);
+    this.authservice.submitApplication(data.value,this.id,this.status,this.Url,this.studentDataByKey.name,this.studentDataByKey.email);
     //console.log(this.Url);
     this.toastr.success("Application Successfully Submited!!!");
   }
@@ -87,12 +91,12 @@ export class StudentLeaveAppComponent implements OnInit {
 
     uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
       (snapshot) => {
-        console.log("uploading the file...");
+      //  console.log("uploading the file...");
         this.truthValue=true;
         this.progress = Math.floor((uploadTask.snapshot.bytesTransferred / uploadTask.snapshot.totalBytes) * 100);
       },
       (error)=>{
-        console.log(error);
+       // console.log(error);
       },
       () =>{
    //     this.Url = uploadTask.snapshot.downloadURL;

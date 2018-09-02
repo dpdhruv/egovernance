@@ -32,7 +32,7 @@ export class AuthService {
   activeStudentKey:string;
   activeAdminKey:string;
   activeAdminName;
-  counsellor:any[];
+  counsellor:any[]
   //studentData:any[];
   public matchedStudentData:any[];
   counsellorList:AngularFireList<any>;
@@ -41,14 +41,16 @@ export class AuthService {
     this.memberList=db.list('/Members');
     db.list('/Members').valueChanges().subscribe(members =>{  
      this.members=members;
-     console.log(this.members);
+  //   console.log(this.members);
   });
   this.applicationList = db.list('/leave-application');
   }
 
-   submitApplication(data : LeaveApp , id:string , status:string ,url:string){
+   submitApplication(data : LeaveApp , id:string , status:string ,url:string,name:string,email:string){
       this.applicationList.push({
         id: id,
+        name: name,
+        email: email,
         subject:data.title,
         content:data.content,
         status:status,
@@ -65,7 +67,7 @@ export class AuthService {
           getStudentData(){
             this.matchedStudentData = [];
             for(let i=0;i<this.members.length;i++){
-              if(this.members[i].counsellor.name == this.activeAdminName ){
+              if(this.members[i].counsellor == this.activeAdminName ){
                   //alert("matched");
                   this.matchedStudentData.push(this.members[i])    
             } 
@@ -98,11 +100,24 @@ export class AuthService {
     //console.log(this.memberList);
     return this.memberList;
   }
+
+  getAllLeaveApplication(){
+  //  console.log("getting...");
+    this.applicationList = this.db.list('leave-application');
+  //  console.log(this.applicationList);
+    return this.applicationList;
+  }
 /************** Getting data along with key ends ************/
   insertCounsellor(name){
     
     this.memberList.update(this.activeStudentKey, {
       counsellor: name
+    });
+  }
+
+  updateApplicationStatus(status,key){ 
+    this.applicationList.update(key, {
+      status: status
     });
   }
 
@@ -174,7 +189,7 @@ validatLogInMember(member){
       }
       else{
       //  alert("valid admin");
-        console.log(this.members[i].name);
+      //  console.log(this.members[i].name);
         this.isValidAdmin = true;
         this.router.navigate(['admin',this.members[i].name]);
       }

@@ -23,6 +23,7 @@ import { AuthGuard } from "./guards/auth.guard";
 import { StudentLeaveAppComponent } from './student-leave-app/student-leave-app.component';
 import { StudentProfileComponent } from './student-profile/student-profile.component';
 import { StudentDataComponent } from './admin/student-data/student-data.component';
+import { LeaveAppAdminComponent } from './admin/leave-app-admin/leave-app-admin.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { StudentDataComponent } from './admin/student-data/student-data.componen
     StudentLeaveAppComponent,
     StudentProfileComponent,
     StudentDataComponent,
+    LeaveAppAdminComponent,
   ],
   imports: [
     BrowserModule,

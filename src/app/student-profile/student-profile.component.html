@@ -11,7 +11,7 @@
         <td>{{activeStudent.name}}</td>
         <td>{{activeStudent.email}}</td>
         <td *ngIf="flag; else elseBlock">
-          {{activeStudent.counsellor.name}}
+          {{activeStudent.counsellor}}
         </td>
         <ng-template #elseBlock>
           <td>

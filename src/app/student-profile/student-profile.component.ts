@@ -42,7 +42,7 @@ activeStudentCounsellor;
     }
   updateCounsellor(form){
     //this.flag = true;
-    this.authservice.insertCounsellor(form.value);
+    this.authservice.insertCounsellor(form.value.name);
     this.toastr.info("","Counsellor name updated as" +" "+form.value.name);
     //this.activeStudent = this.form.value;
   }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../auth.service';
+import { Member } from "../../member";
 
 @Component({
   selector: 'app-student-data',
@@ -15,9 +16,11 @@ export class StudentDataComponent implements OnInit {
 
   ngOnInit() {
  this.authservice.getStudentData();
-/* if(this.authservice.matchedStudentData == null){
-  alert("empty");
- }*/
+
+
+
+
+
  this.matchedStudentData = this.authservice.matchedStudentData;
  if(this.matchedStudentData.length == 0){
    this.isEmpty = true; 
