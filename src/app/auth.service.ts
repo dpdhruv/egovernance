@@ -15,6 +15,8 @@ import { Observable } from "rxjs";
 import { getLocaleDateFormat } from '@angular/common';
 import { variable } from '@angular/compiler/src/output/output_ast'
 import { LeaveApp } from './leave-application';
+import { ToastrService } from 'ngx-toastr';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 
 @Injectable({
@@ -37,7 +39,7 @@ export class AuthService {
   public matchedStudentData:any[];
   counsellorList:AngularFireList<any>;
   //md5 = new Md5();
-  constructor(private db:AngularFireDatabase,private router:Router ,public afs: AngularFirestore,private http:Http ) {
+  constructor(private spinner : NgxSpinnerService ,private db:AngularFireDatabase,private router:Router ,public afs: AngularFirestore,private http:Http,private toastr:ToastrService ) {
     this.memberList=db.list('/Members');
     db.list('/Members').valueChanges().subscribe(members =>{  
      this.members=members;
@@ -46,7 +48,8 @@ export class AuthService {
   this.applicationList = db.list('/leave-application');
   }
 
-   submitApplication(data : LeaveApp , id:string , status:string ,url:string,name:string,email:string){
+   submitApplication(data : LeaveApp , id:string , status:string ,url:string,name:string,email:string,uniqueId:string){
+     this.spinner.show();
       this.applicationList.push({
         id: id,
         name: name,
@@ -54,8 +57,13 @@ export class AuthService {
         subject:data.title,
         content:data.content,
         status:status,
-        Url: url
-      });
+        Url: url,
+        uniqueId:uniqueId
+      }).then(()=>{ 
+        this.toastr.success("","Application Submitted Successfully")
+        this.spinner.hide();
+      },
+       );
    }
 
 /****************** All student-data component logic is here **************************************************/    
@@ -65,11 +73,13 @@ export class AuthService {
 
 
           getStudentData(){
+            this.spinner.show();
             this.matchedStudentData = [];
             for(let i=0;i<this.members.length;i++){
               if(this.members[i].counsellor == this.activeAdminName ){
                   //alert("matched");
-                  this.matchedStudentData.push(this.members[i])    
+                  this.matchedStudentData.push(this.members[i])
+                  this.spinner.hide();    
             } 
           }
         }  
@@ -115,9 +125,13 @@ export class AuthService {
     });
   }
 
-  updateApplicationStatus(status,key){ 
+  updateApplicationStatus(status,key){
+    this.spinner.show() 
     this.applicationList.update(key, {
       status: status
+    }).then(()=>{ 
+      this.spinner.hide();
+      this.toastr.info("","Status updated");
     });
   }
 
@@ -127,6 +141,19 @@ export class AuthService {
   isValidAdmin:boolean=false;
   errorFlag: boolean= false;
   sameEmailError:string;
+  sameEmailErrorFlag:boolean=false;
+
+  emailVerification(email:string){
+    for(let i=0;i<this.members.length;i++){
+      if(email == this.members[i].email){
+        this.sameEmailErrorFlag = true;
+        this.sameEmailError="Email is already used!!!";
+        break;     
+      }else{
+        this.sameEmailErrorFlag = false;
+      }
+    }
+  }
 
    insertStudent( mem : Member)
    {

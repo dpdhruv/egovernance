@@ -31,6 +31,7 @@
     "ng2-toastr": "^4.1.2",
     "ng4-loading-spinner": "^1.2.3",
     "ngx-loading": "^1.0.14",
+    "ngx-spinner": "^6.1.2",
     "ngx-toastr": "^9.0.2",
     "rxjs": "^6.0.0",
     "ts-md5": "^1.2.4",

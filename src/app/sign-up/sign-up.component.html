@@ -4,11 +4,7 @@
 </div>
 <br>
 <form class="col-md-4 mx-auto pt-5" #studentForm="ngForm">
-    <div *ngIf="guardAdminValue" class="alert alert-danger  alert-dismissible in">
-        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-        <strong>Caution!</strong> You are not designated to use the section.
-    </div>
-  <br>
+  
   <label>
     Name
   </label>
@@ -21,8 +17,8 @@
     E-mail
   </label>
   <div class="form-group">
-    <input class="form-control" required #email="ngModel" [class.is-invalid]="errorFlag || email.touched && email.invalid" type="email" name="email" placeholder="Email" ngModel> 
-    <small *ngIf="errorFlag" class="text-danger"> {{sameEmailError}}</small>
+    <input class="form-control" autocomplete=off required (keyup)="checkMail($event)" #email="ngModel" [class.is-invalid]="errorFlag || sameEmailErrorFlag || email.touched && email.invalid" type="email" name="email" placeholder="Email" ngModel> 
+    <small *ngIf="errorFlag || sameEmailErrorFlag" class="text-danger"> {{sameEmailError}}</small>
     <small *ngIf="email.touched && email.invalid" class="text-danger"><sup class="text-danger">*</sup>Pease fill in the email</small>
   </div>
 

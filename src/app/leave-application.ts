@@ -1,5 +1,6 @@
 export interface LeaveApp{
     $key:string;
+    uniqueId:string;
     name:string;
     email:string;
     id:string;

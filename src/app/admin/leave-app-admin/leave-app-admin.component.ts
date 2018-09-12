@@ -4,6 +4,7 @@ import { Member } from "../../member";
 import { LeaveApp } from "../../leave-application";
 import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
 import { element } from 'protractor';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-leave-app-admin',
@@ -17,42 +18,64 @@ export class LeaveAppAdminComponent implements OnInit {
   CounsellorName:string[];
   leaveApplication:any[];
   associatedStudentKey:any[]=[];
-  isHidden:boolean=true;
-  isHiddenStatus:boolean=true;
+  public isHidden:boolean[]=[];
+  isHiddenStatus:boolean[]=[];
   applicationDataBykey: LeaveApp[];
   applicationToUpdateKey:string;
   matchedApplication:any[];
+  isEmptyApplication:boolean;
+  isURLNull:boolean[]=[];
 
-  constructor(private authservice : AuthService,private db:AngularFireDatabase) { }
+  index;
+  
 
+  constructor(private spinner : NgxSpinnerService ,private authservice : AuthService,private db:AngularFireDatabase) { 
 
-  show(){ 
-    this.isHidden = false;
   }
 
-  hide(){
-    this.isHidden = true;
+
+  show(index){ 
+    this.isHidden[index] = false; 
+  }
+
+  hide(index){
+    this.isHidden[index] = true;
+  }
+
+  set(){
+     for(let i=0;i<this.matchedApplication.length;i++){
+      this.isHidden[i]=true;
+      this.isHiddenStatus[i] = true;
+    }
+  //  console.log(this.isHidden);
+  //  console.log(this.isHiddenStatus)
   }
 
   editStatus(index){
-    this.isHiddenStatus = !this.isHiddenStatus;
+    //console.log("select:",index);
+    //console.log("id",this.matchedApplication[index].id);
+    this.isHiddenStatus[index] = !this.isHiddenStatus[index];
     for(let i=0;i<this.applicationDataBykey.length;i++){
-      if(this.matchedApplication[index].id == this.applicationDataBykey[i].id){
-       // console.log(this.matchedApplication[index].id,"matched",this.applicationDataBykey[i].id);
+     // console.log("i:",i);
+      if(this.matchedApplication[index].uniqueId == this.applicationDataBykey[i].uniqueId){
+       // console.log(this.matchedApplication[index].uniqueId,"matched",this.applicationDataBykey[i].uniqueId);
         this.applicationToUpdateKey = this.applicationDataBykey[i].$key;      
       }
     }
+   // console.log(this.applicationToUpdateKey);
   }
  
   update(status){
-    console.log(this.applicationDataBykey);
-    console.log(status.value);
+   // console.log(this.applicationDataBykey);
+   // console.log(status.value);
     this.authservice.updateApplicationStatus(status.value.status,this.applicationToUpdateKey);
   }
 
 
   ngOnInit() {
     this.authservice.getStudentData();
+    this.spinner.show()
+        
     
     var lists = this.authservice.getAllData();
     var application = this.authservice.getAllLeaveApplication();
@@ -82,7 +105,7 @@ export class LeaveAppAdminComponent implements OnInit {
          // alert(this.Student[i].name+" "+this.Student[i].$key);
         }
       }
-
+      
     //    console.log(this.matchedApplication);
     }); 
 /********************************* Finds students associated with counsellor (Ends) *********************/
@@ -111,14 +134,26 @@ export class LeaveAppAdminComponent implements OnInit {
       //                   console.log(this.leaveApplication[i].id+" " +"Matched"+" "+this.associatedStudentKey[j]);
       //                   console.log(this.leaveApplication[i]);
                          this.matchedApplication.push(this.leaveApplication[i]);
+                         this.set();
                       }
                 }
           }
   
       for(let i=0;i<this.matchedApplication.length;i++){
         this.matchedApplication[i].content = this.matchedApplication[i].content.replace(new RegExp('\n', 'g'), "<br>");
+        if(this.matchedApplication[i].Url == "null"){
+      //    console.log("empty");
+          this.isURLNull[i]=true;
+        }
+      }
+      if(this.matchedApplication.length>0){
+        this.isEmptyApplication = false;
+      }  else
+      {
+        this.isEmptyApplication = true;
       }
     //  console.log(this.matchedApplication);
+    this.spinner.hide();
 
   }); 
 
@@ -126,6 +161,7 @@ export class LeaveAppAdminComponent implements OnInit {
 
       this.matchedStudentData = this.authservice.matchedStudentData;
     //  console.log(this.matchedStudentData);
+
   }
 
 }

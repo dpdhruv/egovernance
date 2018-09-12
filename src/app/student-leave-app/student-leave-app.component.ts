@@ -5,6 +5,8 @@ import { ToastrService } from 'ngx-toastr';
 import * as firebase from 'firebase/app';
 import 'firebase/storage';
 import { AngularFirestore, AngularFirestoreDocument } from "angularfire2/firestore";
+import { NgxSpinnerService } from 'ngx-spinner';
+import { LeaveApp } from '../leave-application';
 
 
 @Component({
@@ -16,6 +18,7 @@ export class StudentLeaveAppComponent implements OnInit {
 
   id:string;
   status:string;
+  uniqueId:string;
   applicationList:AngularFireList<any>;
   list:any[];
   newList:any[];
@@ -29,10 +32,12 @@ export class StudentLeaveAppComponent implements OnInit {
   progress;
   truthValue:boolean=false;
   studentDataByKey:any;
+  application:LeaveApp[];
+  applicationId;
  
-  constructor(private authservice:AuthService,private toastr: ToastrService ,private db:AngularFireDatabase) {
+  constructor(private spinner : NgxSpinnerService ,private authservice:AuthService,private toastr: ToastrService ,private db:AngularFireDatabase) {
     this.applicationList = db.list('/leave-application');
-
+    //this.spinner.show();
     db.list(`/leave-application`).valueChanges().subscribe(list =>{  
       this.list=list;
      // console.log(this.list);
@@ -42,6 +47,10 @@ export class StudentLeaveAppComponent implements OnInit {
           this.newList.push(this.list[i]);
         }
       }
+
+      for(let i=0;i<this.newList.length;i++){
+        this.newList[i].content = this.newList[i].content.replace(new RegExp('\n', 'g'), "<br>");
+      }
  
       this.lengthCheck = this.newList.length;
       if(this.lengthCheck > 0){
@@ -50,34 +59,72 @@ export class StudentLeaveAppComponent implements OnInit {
       else{
         this.isListEmpty = true;
       }
-     });
+
+     // console.log(this.newList);
+     }
+     );
   }
 
   ngOnInit() {
    // console.log(this.authservice.activeStudentKey);
+   //this.spinner.hide();
+   var application = this.authservice.getAllLeaveApplication();
+
+    application.snapshotChanges().subscribe(item => {
+      this.application = [];
+      item.forEach(element =>{
+        var mem = element.payload.toJSON();
+        mem["$key"] = element.key;
+        this.application.push( mem as LeaveApp); 
+      });
+    });
+    this.authservice.getDataByKey().subscribe(res=>{
+      this.studentDataByKey = res.json(); 
+      //console.log(this.studentDataByKey)  
+     },(error)=>console.log(error))
   }
 
- private submitApplication(data){
+  submitApplication(data){
     this.id = this.authservice.activeStudentKey;
     this.status = "Pending";
-    this.authservice.getDataByKey().subscribe(res=>{
-     this.studentDataByKey = res.json(); 
-     //console.log(this.studentDataByKey)  
-    });
+    this.uniqueId = this.id + Math.floor(Math.random()*10000);
     //console.log(data.value);
      if(this.fileLength==0){
       this.Url="null";
      // console.log(this.fileLength);
      // console.log(this.Url);
      } 
-    this.authservice.submitApplication(data.value,this.id,this.status,this.Url,this.studentDataByKey.name,this.studentDataByKey.email);
+    this.authservice.submitApplication(data.value,this.id,this.status,this.Url,this.studentDataByKey.name,this.studentDataByKey.email,this.uniqueId);
     //console.log(this.Url);
-    this.toastr.success("Application Successfully Submited!!!");
+  }
+
+  deleteApplication(index){
+
+    for(let i=0;i<this.application.length;i++){
+      if(this.newList[index].uniqueId == this.application[i].uniqueId){
+        this.applicationId = this.application[i].$key;
+        this.db.list(`/leave-application/${this.applicationId}`).remove().then(()=> {
+          this.toastr.warning("Application Deleted");
+        });
+        break;
+      }
+    }
+
   }
 
   trigger(){
     var upload =document.getElementById("file");
     upload.click();
+  }
+
+  deleteFile(){
+    let storageRef = firebase.storage().ref();
+    let deleteTask = storageRef.child(`${this.authservice.activeStudentKey}/${this.file.name}`);
+    this.spinner.show();
+    deleteTask.delete().then( ()=>{
+      this.toastr.error("Attachment Removed");
+      this.spinner.hide();
+    });
   }
 
   fileSelected(event:any){

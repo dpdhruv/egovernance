@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../auth.service';
 import { Member } from "../../member";
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-student-data',
@@ -10,7 +11,7 @@ import { Member } from "../../member";
 export class StudentDataComponent implements OnInit {
 
   isEmpty:boolean=false;
-  constructor(private authservice : AuthService) { }
+  constructor(private spinner : NgxSpinnerService ,private authservice : AuthService) { }
 
   matchedStudentData:any[];
 

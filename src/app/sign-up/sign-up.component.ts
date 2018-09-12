@@ -14,6 +14,7 @@ export class SignUpComponent implements OnInit {
  sameEmailError:string;
  errorFlag:boolean=false;
  guardAdminValue:boolean;
+ sameEmailErrorFlag:boolean=false;
 
   
 
@@ -37,5 +38,11 @@ export class SignUpComponent implements OnInit {
 //navigation to login page 
   loginPageroute(){
     this.route.navigate(['login']);
+  }
+  checkMail(event){
+    console.log(event.target.value);
+    this.authservice.emailVerification(event.target.value);
+    this.sameEmailError = this.authservice.sameEmailError;
+    this.sameEmailErrorFlag = this.authservice.sameEmailErrorFlag;
   }
 }

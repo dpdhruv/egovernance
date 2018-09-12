@@ -54,4 +54,8 @@ export class AdminComponent implements OnInit {
   leaveAppDashboard(){
     this.router.navigate(['leave-app-dashboard'],{relativeTo:this.route});
   }
+  logout(){
+    this.authservice.isValidAdmin = false;
+    this.router.navigate(["login"]).then(()=> this.toastr.success("You have logged out"));
+  }
 }

@@ -1,3 +1,4 @@
+
 <div class="container">
   <h1 class="text-dark text-center mt-2" style="font-size:2em;">Egovernance Portal</h1>
   <hr>
@@ -28,5 +29,5 @@
     <input class="form-control" required #password="ngModel" [class.is-invalid]="authErrorFlag || password.touched && password.invalid"  type="password" name="password" placeholder="Password" ngModel> 
     <small *ngIf="password.touched && password.invalid" class="text-danger"><sup class="text-danger">*</sup>Please fill in the password</small>
   </div>
-  <button class="btn btn-primary btn-block p-1"  style="border-radius:50px;" (click)="sendData(studentForm)">Sign-Up</button>
+  <button class="btn btn-primary btn-block p-1" [style.cursor]="email.invalid || password.invalid ? 'not-allowed' : 'pointer' " [disabled]="email.invalid || password.invalid"  style="border-radius:50px;" (click)="sendData(studentForm)">Log In</button>
 </form>

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
+import { NgxSpinnerService } from 'ngx-spinner';
+
 
 @Component({
   selector: 'app-log-in',
@@ -13,7 +15,8 @@ export class LogInComponent implements OnInit {
   authErrorFlag:boolean=false;
  /*Varibles for error checking ends */ 
 
-  constructor(private authservice: AuthService) { }
+  constructor(private authservice: AuthService , private spinner: NgxSpinnerService) {
+  }
 
    sendData(studentForm){
     this.authservice.validatLogInMember(studentForm.value);

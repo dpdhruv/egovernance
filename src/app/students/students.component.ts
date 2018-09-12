@@ -58,5 +58,10 @@ public activeStudentKey;
       this.router.navigate(['leave-application'],{relativeTo:this.route});
     }
 
+    logout(){
+      this.authservice.isValidStudent = false;
+      this.router.navigate(['login']).then(()=>this.toastr.success("You have logged out"));
+    }
+
   
 }

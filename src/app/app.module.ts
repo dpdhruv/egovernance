@@ -13,6 +13,7 @@ import { HttpModule } from '@angular/http';
 import { ToastrModule } from "ngx-toastr";
 import { LoadingModule } from 'ngx-loading';
 import 'firebase/storage';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 import { AppComponent } from './app.component';
 import { environment } from '../environments/environment';
@@ -34,8 +35,8 @@ import { LeaveAppAdminComponent } from './admin/leave-app-admin/leave-app-admin.
     StudentLeaveAppComponent,
     StudentProfileComponent,
     StudentDataComponent,
-    LeaveAppAdminComponent,
-  ],
+    LeaveAppAdminComponent
+    ],
   imports: [
     BrowserModule,
      HttpModule,
@@ -49,6 +50,7 @@ import { LeaveAppAdminComponent } from './admin/leave-app-admin/leave-app-admin.
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
     LoadingModule,
+    NgxSpinnerModule,
    // AngularFirestore
   ],
   providers: [AuthService,AuthGuard],

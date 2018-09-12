@@ -4,6 +4,7 @@ import { Member } from '../member';
 import { AngularFireList } from 'angularfire2/database';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { ToastrService } from 'ngx-toastr';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-student-profile',
@@ -18,15 +19,18 @@ counsellorName:any[];
 flag:boolean=true;
 activeStudent;
 activeStudentCounsellor;
-  constructor(private authservice:AuthService,private db:AngularFireDatabase,private toastr : ToastrService) {
-      this.authservice.getCounsellor();
-      this.counsellorName = this.authservice.counsellor;  
-    }
+  constructor(private spinner : NgxSpinnerService ,private authservice:AuthService,private db:AngularFireDatabase,private toastr : ToastrService) {
+    this.spinner.show();    
+    this.authservice.getCounsellor();
+    this.counsellorName = this.authservice.counsellor;
+  }
  
 
   
   ngOnInit() {
-  console.log(this.authservice.activeStudentKey);
+  
+    //console.log(this.authservice.activeStudentKey);
+    
   this.authservice.getDataByKey().subscribe(res =>{
     //this.spinner.hide();
   //  this.loading = false;
@@ -37,6 +41,7 @@ activeStudentCounsellor;
        this.flag = false;
      //  console.log(this.flag);
      }
+     //this.spinner.hide();
    });
    
     }
